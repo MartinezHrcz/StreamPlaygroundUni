@@ -17,7 +17,10 @@ public class Main {
         //System.out.println(feladat9(countries));
         //feladat10(countries);
         //System.out.println(feladat12(countries));
-        System.out.println(feladat16(countries));
+        //System.out.println(feladat16(countries));
+        //feladat17(countries);
+        //System.out.println(feladat20(countries));
+        System.out.println(feladat21(countries));
     }
     public static void feladat1(List<Country> countries) {
         countries.stream()
@@ -80,5 +83,32 @@ public class Main {
                 .filter(country -> country.region() == Region.EUROPE)
                 .max(Comparator.comparingLong(Country::population))
                 .get().name();
+    }
+
+    public static void feladat17(List<Country> countries){
+        countries.stream()
+                .map(Country::name)
+                .limit(5).forEach(System.out::println);
+    }
+
+    public static boolean feladat18(List<Country> countries){
+        return countries.stream()
+                .anyMatch(country -> country.population()==0);
+    }
+
+    public static boolean feladat19(List<Country> countries){
+        return countries.stream()
+                .allMatch(country -> country.timezones().size()>0);
+    }
+
+    public static Country feladat20(List<Country> countries){
+        return countries.stream()
+                .filter(country -> country.name().startsWith("H"))
+                .findFirst().get();
+    }
+
+    public static long feladat21(List<Country> countries){
+        return countries.stream()
+                .flatMap(country -> country.timezones().stream()).distinct().count();
     }
 }
