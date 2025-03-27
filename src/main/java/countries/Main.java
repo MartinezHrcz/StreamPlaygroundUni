@@ -1,6 +1,7 @@
 package countries;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -24,7 +25,12 @@ public class Main {
         //3.Feladatsor: redukciós műveletek
         //System.out.println(feladat31(countries));
         //feladat32(countries);
-        System.out.println(feladat33(countries));
+        //System.out.println(feladat33(countries));
+        //System.out.println(feladat34(countries));
+        //System.out.println(feladat35(countries));
+        //System.out.println(feladat36(countries));
+        //System.out.println(feladat37(countries));
+
     }
     public static Country feladat31(List<Country> countries) {
         return countries.stream()
@@ -45,7 +51,57 @@ public class Main {
                 .mapToDouble(BigDecimal::doubleValue)
                 .summaryStatistics();
     }
+    public static String feladat35(List<Country> countries) {
+        return  countries.stream()
+                .map(country -> country.name())
+                .sorted().collect(Collectors.joining(","));
+    }
 
+    public static BigDecimal feladat34(List<Country> countries) {
+        return countries.stream()
+                .map(country -> country.area())
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    }
+
+    public static Map<String, String> feladat36(List<Country> countries) {
+        return countries.stream()
+                .collect(Collectors.toMap(Country::code, Country::name));
+    }
+
+    public static Map<String, Country> feladat37(List<Country> countries) {
+        return countries.stream()
+                .collect(Collectors.toMap(Country::code, country -> country));
+    }
+
+    public static void feladat38(List<Country> countries) {
+        Country hungray = feladat37(countries).get("Hu");
+        countries.stream()
+                .filter(x->x.population() <= hungray.population())
+                .sorted(Comparator.comparing(Country::population)).forEach(country -> {
+                    System.out.println(country.name() + " " + country.population());
+                });
+    }
+
+    public static Map<Boolean, Long> feladat39(List<Country> countries) {
+        return countries.stream()
+                .collect(Collectors.partitioningBy(country-> country.region() != Region.EUROPE, Collectors.counting()));
+    }
+
+    public static Map<Region,List<Country>> feladat310(List<Country> countries){
+        return countries.stream()
+                .collect(Collectors.groupingBy(Country::region));
+    }
+
+    public static Map<Region,Long> feladat311(List<Country> countries){
+        return countries.stream()
+                .collect(Collectors.groupingBy(Country::region,Collectors.counting()));
+    }
+    public static Map<Region,Double> feladat313(List<Country> countries){
+        return countries.stream()
+                .collect(Collectors.groupingBy(Country::region,Collectors.averagingLong(Country::population)));
+    }
 
     //---------------------------------------------------
     public static void feladat1(List<Country> countries) {
